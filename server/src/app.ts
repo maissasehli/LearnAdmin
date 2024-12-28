@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(cors()); // to let the front-end access the api
 
 // Serve static files for uploaded images
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../src/uploads")));
 
 // Setup database and associations
 const initializeDatabase = async () => {

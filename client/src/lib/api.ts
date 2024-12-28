@@ -19,14 +19,14 @@ interface CourseResponse {
 export const courseApi = {
   async getAllCourses(): Promise<Course[]> {
     const response = await fetch(`${API_BASE_URL}/course`);
-    const data = await response.json() as ApiResponse<CourseResponse[]>;
+    const data = (await response.json()) as ApiResponse<CourseResponse[]>;
     if (!data.success) throw new Error(data.message);
     return data.data.map((course) => ({
       id: course.id,
       title: course.name,
       description: course.description,
       price: course.price,
-      image: course.image
+      image: course.image,
     }));
   },
 
@@ -38,17 +38,17 @@ export const courseApi = {
         name: course.title,
         description: course.description,
         price: course.price,
-        image: course.image
-      })
+        image: course.image,
+      }),
     });
-    const data = await response.json() as ApiResponse<CourseResponse>;
+    const data = (await response.json()) as ApiResponse<CourseResponse>;
     if (!data.success) throw new Error(data.message);
     return {
       id: data.data.id,
       title: data.data.name,
       description: data.data.description,
       price: data.data.price,
-      image: data.data.image
+      image: data.data.image,
     };
   },
 
@@ -60,25 +60,25 @@ export const courseApi = {
         name: course.title,
         description: course.description,
         price: course.price,
-        image: course.image
-      })
+        image: course.image,
+      }),
     });
-    const data = await response.json() as ApiResponse<CourseResponse>;
+    const data = (await response.json()) as ApiResponse<CourseResponse>;
     if (!data.success) throw new Error(data.message);
     return {
       id: data.data.id,
       title: data.data.name,
       description: data.data.description,
       price: data.data.price,
-      image: data.data.image
+      image: data.data.image,
     };
   },
 
   async deleteCourse(id: number): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/course/${id}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     });
-    const data = await response.json() as ApiResponse<void>;
+    const data = (await response.json()) as ApiResponse<void>;
     if (!data.success) throw new Error(data.message);
-  }
+  },
 };

@@ -1,5 +1,5 @@
 import { FC, useState, useMemo, useEffect } from 'react';
-import { Search, Grid, List, Plus } from 'lucide-react';
+import { Search, Grid, List, Plus, BookOpen } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -85,85 +85,105 @@ const Dashboard: FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#120316] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#F39F5A]"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-yellow"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#120316] p-6">
-      <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center">
-            <img
-              src="../src/assets/logo/the_bridge.png"
-              alt="Logo"
-              className="h-12 object-contain"
-            />
-          </div>
-          <div className="relative flex-1 mx-8 bg-darkPurple">
-            <Input
-              className="w-full pl-10 bg-darkPurple text-white border border-transparent focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              placeholder="Search by title..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#F39F5A] h-5 w-5" />
-          </div>
-
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button 
-                onClick={() => {
-                  setEditingCourse(null);
-                  setIsDialogOpen(true);
-                }}
-                className="bg-[#371641] text-[#F39F5A] hover:bg-[#24062C]"
-              >
-                <Plus className="h-5 w-5 mr-2" /> Add Course
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-darkPurple text-[#F39F5A]">
-              <DialogHeader>
-                <DialogTitle className="text-[#AE445A]">
-                  {editingCourse ? 'Edit Course' : 'Add New Course'}
-                </DialogTitle>
-              </DialogHeader>
-              <CourseForm 
-                course={editingCourse || { title: '', price: 0, description: '', image: '' }} 
-                onSave={handleSave}
-                mode={editingCourse ? 'edit' : 'create'}
+    <div className="min-h-screen bg-background">
+      {/* Header Section */}
+      <div className="bg-darkPurple border-b border-purple/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-8">
+              <img
+                src="../src/assets/logo/the_bridge.png"
+                alt="Logo"
+                className="h-12 object-contain"
               />
-            </DialogContent>
-          </Dialog>
-        </div>
+              <div className="hidden md:flex items-center space-x-6">
+                <Button variant="ghost" className="text-yellow hover:bg-purple/20">
+                  <BookOpen className="h-5 w-5 mr-2" />
+                  My Courses
+                </Button>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <div className="relative w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow h-5 w-5" />
+                <Input
+                  className="w-full pl-10 bg-purple/20 text-white border-purple focus:ring-yellow"
+                  placeholder="Search courses..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
 
-        <div className="flex items-center gap-4 mb-6">
-          <span className="text-[#F39F5A]">View</span>
-         
-          <Button
-            variant="ghost"
-            className={!isGrid ? 'bg-[#AE445A]' : ''}
-            onClick={() => setIsGrid(false)}
-          >
-            <List className="h-5 w-5 text-[#F39F5A]" />
-          </Button>
-          <Button
-            variant="ghost"
-            className={isGrid ? 'bg-[#AE445A]' : ''}
-            onClick={() => setIsGrid(true)}
-          >
-            <Grid className="h-5 w-5 text-[#F39F5A]" />
-          </Button>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button 
+                    onClick={() => {
+                      setEditingCourse(null);
+                      setIsDialogOpen(true);
+                    }}
+                    className="bg-purple text-yellow hover:bg-purple/90"
+                  >
+                    <Plus className="h-5 w-5 mr-2" /> Add Course
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-darkPurple border border-purple/20">
+                  <DialogHeader>
+                    <DialogTitle className="text-pink">
+                      {editingCourse ? 'Edit Course' : 'Add New Course'}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <CourseForm 
+                    course={editingCourse || { title: '', price: 0, description: '', image: '' }} 
+                    onSave={handleSave}
+                    mode={editingCourse ? 'edit' : 'create'}
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-2xl font-semibold text-yellow">Courses Overview</h1>
+          <div className="flex items-center space-x-2 bg-purple/20 rounded-lg p-1">
+            <Button
+              variant="ghost"
+              className={`${!isGrid ? 'bg-purple text-yellow' : 'text-yellow/60'} rounded-md`}
+              onClick={() => setIsGrid(false)}
+            >
+              <List className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              className={`${isGrid ? 'bg-purple text-yellow' : 'text-yellow/60'} rounded-md`}
+              onClick={() => setIsGrid(true)}
+            >
+              <Grid className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
 
         {filteredCourses.length === 0 ? (
-          <div className="text-center text-[#F39F5A] py-8">
-            No courses found
+          <div className="text-center py-12">
+            <div className="bg-purple/20 rounded-lg p-8 inline-block">
+              <BookOpen className="h-12 w-12 text-yellow mx-auto mb-4" />
+              <p className="text-yellow text-lg">No courses found</p>
+              <p className="text-yellow/60 mt-2">Try adjusting your search or add a new course</p>
+            </div>
           </div>
         ) : (
-          <div className={`grid gap-4 ${isGrid ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+          <div className={`grid gap-6 ${isGrid ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
             {filteredCourses.map(course => (
               <CourseCard
                 key={course.id}

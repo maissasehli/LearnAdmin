@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Edit2, Trash2 } from 'lucide-react';
+import { Edit2, Trash2} from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Course } from '@/types/course';
@@ -17,101 +17,102 @@ export const CourseCard: FC<CourseCardProps> = ({
   onDelete,
   isGrid,
 }) => {
-  // Handle image source: if it's a File, create an object URL
   const getImageSrc = (image: string | File | undefined) => {
     if (!image) return '';
-    if (typeof image === 'string') return image; // If it's already a string URL
-    if (image instanceof File) return URL.createObjectURL(image); // If it's a File, create a URL
+    if (typeof image === 'string') return image;
+    if (image instanceof File) return URL.createObjectURL(image);
     return '';
   };
 
   return (
-    <Card className={`group ${isGrid ? 'p-0 flex flex-col h-[340px]' : 'flex items-center justify-between p-4'} bg-darkPurple`}>
+    <Card className={`group transition-all duration-500 hover:shadow-2xl rounded-lg transform ${
+      isGrid 
+        ? 'p-0 flex flex-col h-[400px] hover:scale-105 hover:translate-y-[-8px]' 
+        : 'flex items-center justify-between p-5 hover:bg-purple/10'
+    } bg-darkPurple border border-purple/30`}>
       {isGrid ? (
-        // Grid layout (Vertical)
         <>
-          <div className="relative w-full h-48 overflow-hidden">
+          <div className="relative w-full h-52 overflow-hidden rounded-t-lg">
             <img
-              src={getImageSrc(course.image)} // Use the function to get the correct image source
+              src={getImageSrc(course.image)}
               alt={course.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors">
-              <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => onEdit(course)}
-                  className="text-[#AE445A]"
-                >
-                  <Edit2 className="h-5 w-5" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => onDelete(course.id)}
-                  className="text-[#602420]"
-                >
-                  <Trash2 className="h-5 w-5" />
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div className="p-4 flex flex-col flex-1">
-            <h3 className="text-xl font-medium mb-2 text-[#F39F5A]">
-              {course.title}
-            </h3>
-            {course.description && (
-              <p className="text-sm text-[#F97316] line-clamp-3 flex-1">
-                {course.description}
-              </p>
-            )}
-            {course.price !== undefined && (
-              <div className="mt-4 text-lg font-medium text-yellow-500">
-                ${course.price.toFixed(2)}
-              </div>
-            )}
-          </div>
-        </>
-      ) : (
-        // Horizontal layout (Default)
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-4 flex-1">
-            <div className="h-16 w-16 relative rounded-lg overflow-hidden">
-              <img
-                src={getImageSrc(course.image)} // Use the function to get the correct image source
-                alt={course.title}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col flex-1">
-              <div className="flex items-center justify-between">
-                <span className="text-lg text-[#F39F5A]">{course.title}</span>
+            <div className="absolute inset-0 bg-gradient-to-t from-darkPurple/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+             
                 <div className="flex gap-2">
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => onEdit(course)}
-                    className="text-[#AE445A]"
+                    className="bg-purple/80 hover:bg-purple text-pink"
                   >
-                    <Edit2 className="h-5 w-5" />
+                    <Edit2 className="h-4 w-4" />
                   </Button>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={() => onDelete(course.id)}
-                    className="text-[#832222]" // Orange for delete button
+                    className="bg-purple/80 hover:bg-purple text-pink"
                   >
-                    <Trash2 className="h-5 w-5" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="p-6 flex flex-col flex-1">
+            <div className="flex items-start justify-between mb-3">
+              <h3 className="text-2xl font-extrabold text-yellow tracking-wide line-clamp-2">{course.title}</h3>
+              <span className="text-lg font-semibold text-pink whitespace-nowrap ml-4">
+                ${course.price?.toFixed(2)}
+              </span>
+            </div>
+            {course.description && (
+              <p className="text-sm text-yellow/70 line-clamp-3 flex-1 mb-3">{course.description}</p>
+            )}
+          
+          </div>
+        </>
+      ) : (
+        <div className="flex items-center justify-between w-full gap-6">
+          <div className="flex items-center gap-6 flex-1">
+            <div className="h-24 w-32 relative rounded-lg overflow-hidden shadow-md">
+              <img
+                src={getImageSrc(course.image)}
+                alt={course.title}
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex items-start justify-between mb-3">
+                <h3 className="text-xl font-semibold text-yellow">{course.title}</h3>
+                <span className="text-lg font-semibold text-pink whitespace-nowrap ml-4">
+                  ${course.price?.toFixed(2)}
+                </span>
+              </div>
               {course.description && (
-                <span className="text-sm text-[#F97316]">{course.description}</span>
+                <p className="text-sm text-yellow/70 line-clamp-2 mb-3">{course.description}</p>
               )}
-              {course.price !== undefined && (
-                <span className="text-yellow-500 text-[#2b8630]">${course.price.toFixed(2)}</span>
-              )}
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onEdit(course)}
+                className="text-pink hover:bg-purple/20"
+              >
+                <Edit2 className="h-5 w-5" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onDelete(course.id)}
+                className="text-pink hover:bg-purple/20"
+              >
+                <Trash2 className="h-5 w-5" />
+              </Button>
             </div>
           </div>
         </div>
